@@ -1,0 +1,108 @@
+OIBSIP - Security Analyst
+Task 1: Basic Network Scanning with Nmap
+
+Target:
+127.0.0.1 (localhost)
+
+Environment:
+Ubuntu 22.04.5 LTS running through WSL
+
+--------------------------------------------------
+1. BASIC PORT SCAN
+--------------------------------------------------
+
+Command:
+nmap -Pn 127.0.0.1
+
+Purpose:
+To identify open, closed, and filtered TCP ports on the
+authorized localhost target.
+
+Result:
+
+PORT       STATE    SERVICE
+135/tcp    open     msrpc
+445/tcp    open     microsoft-ds
+45100/tcp  closed   unknown
+48080/tcp  closed   unknown
+
+996 ports were reported as filtered.
+
+
+--------------------------------------------------
+2. SERVICE AND VERSION DETECTION
+--------------------------------------------------
+
+Command:
+nmap -Pn -sV 127.0.0.1
+
+Purpose:
+To identify the services running on open ports and attempt
+to determine their software/version information.
+
+Result:
+
+PORT       STATE    SERVICE        VERSION
+135/tcp    open     msrpc          Microsoft Windows RPC
+445/tcp    open     microsoft-ds?  Service version not identified
+45100/tcp  closed   unknown
+48080/tcp  closed   unknown
+
+Service Information:
+OS: Windows
+
+
+--------------------------------------------------
+3. OPERATING SYSTEM DETECTION
+--------------------------------------------------
+
+Command:
+sudo nmap -Pn -O 127.0.0.1
+
+Purpose:
+To attempt to identify the operating system using Nmap's
+OS fingerprinting techniques.
+
+Result:
+
+All 1000 scanned ports were reported as closed.
+
+Nmap reported:
+"Too many fingerprints match this host to give specific
+OS details."
+
+Therefore, a specific operating system could not be
+determined from this OS detection scan.
+
+
+--------------------------------------------------
+SECURITY OBSERVATIONS
+--------------------------------------------------
+
+1. TCP port 135 was open and identified as Microsoft Windows RPC.
+
+2. TCP port 445 was open and associated with Microsoft-DS/SMB.
+
+3. Ports 45100 and 48080 were closed.
+
+4. Most of the scanned ports were filtered, indicating that
+   network filtering/firewall controls may be restricting
+   access.
+
+5. Exposed RPC and SMB services should be appropriately
+   restricted and should not be unnecessarily accessible
+   from untrusted networks.
+
+6. OS detection was attempted, but Nmap could not determine
+   a specific OS from this scan.
+
+--------------------------------------------------
+CONCLUSION
+--------------------------------------------------
+
+The Nmap assessment successfully identified open, closed,
+and filtered ports on the authorized localhost environment.
+Service detection identified Microsoft Windows RPC on port
+135 and a Microsoft-DS/SMB-related service on port 445.
+Further security assessment should verify whether these
+services are required and appropriately restricted.
